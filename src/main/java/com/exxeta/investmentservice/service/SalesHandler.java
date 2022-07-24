@@ -30,15 +30,15 @@ public class SalesHandler {
     }
 
     private DepotEntry getDepotEntryFromDatabase(Transaction transaction) {
-        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(
-            transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName());
+        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(
+            transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
 
         if (depotEntryList.size() == 1) {
             return depotEntryList.get(0);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The number of depot entries in the database for "
                 + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
-                + " and the security name " + transaction.getSecurityName() + " must be one, but was " + depotEntryList.size());
+                + " and the ISIN " + transaction.getIsin() + " must be one, but was " + depotEntryList.size());
         }
     }
 

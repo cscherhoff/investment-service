@@ -38,14 +38,14 @@ public class TestSalesHandler {
         DepotEntry updatedDepotEntry = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(20.5),
             BigDecimal.valueOf(10.0), BigDecimal.valueOf(0.8200000).setScale(7, RoundingMode.HALF_UP));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase));
         doNothing().when(profitHandler).createProfit(transaction, depotEntryFromDatabase);
         doNothing().when(profitHandler).saveProfit();
         when(depotEntryRepository.save(updatedDepotEntry)).thenReturn(null);
 
         salesHandler.processSale(transaction);
-        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndSecurityName(
+        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndIsin(
             userId, depotName, securityName);
         verify(depotEntryRepository, times(1)).save(updatedDepotEntry);
         verify(profitHandler, times(1)).createProfit(transaction, depotEntryFromDatabase);
@@ -67,14 +67,14 @@ public class TestSalesHandler {
 //        DepotEntry updatedDepotEntry = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(0.0),
 //            BigDecimal.valueOf(10.0), BigDecimal.valueOf(1.0));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase));
         doNothing().when(profitHandler).createProfit(transaction, depotEntryFromDatabase);
         doNothing().when(profitHandler).saveProfit();
         doNothing().when(depotEntryRepository).delete(depotEntryFromDatabase);
 
         salesHandler.processSale(transaction);
-        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndSecurityName(
+        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndIsin(
             userId, depotName, securityName);
         verify(depotEntryRepository, times(1)).delete(depotEntryFromDatabase);
         verify(profitHandler, times(1)).createProfit(transaction, depotEntryFromDatabase);
@@ -94,19 +94,19 @@ public class TestSalesHandler {
         DepotEntry depotEntryFromDatabase = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(25.0),
             BigDecimal.valueOf(10.0), BigDecimal.valueOf(1.0));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase));
 
         assertThatExceptionOfType(ResponseStatusException.class).
             isThrownBy(() -> salesHandler.processSale(transaction)).withMessage("400 BAD_REQUEST \"It is not possible "
             + "to sell more securities (25.3) than there are in the database (25.0)!\"");
-        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndSecurityName(
+        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndIsin(
             userId, depotName, securityName);
         verify(profitHandler, times(1)).createProfit(transaction, depotEntryFromDatabase);
         verifyNoMoreInteractions(depotEntryRepository, profitHandler);
     }
 
-    @Test void testSellSomethingThatIsNoInTheDatabase() {
+    @Test void testSellSomethingThatIsNotInTheDatabase() {
         long userId = 6;
         String depotName = "ING Depot";
         String securityName = "BMW";
@@ -115,13 +115,13 @@ public class TestSalesHandler {
             BigDecimal.valueOf(153.92));
         transaction.setUserId(userId);
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(Collections.emptyList());
 
         assertThatExceptionOfType(ResponseStatusException.class).
             isThrownBy(() -> salesHandler.processSale(transaction)).withMessage("400 BAD_REQUEST \"The number of depot entries in the database for "
-            + "the user ID 6, the depot with the name ING Depot and the security name BMW must be one, but was 0\"");
-        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndSecurityName(
+            + "the user ID 6, the depot with the name ING Depot and the ISIN BMW must be one, but was 0\"");
+        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndIsin(
             userId, depotName, securityName);
         verifyNoMoreInteractions(depotEntryRepository);
         verifyNoInteractions(profitHandler);
@@ -138,13 +138,13 @@ public class TestSalesHandler {
         DepotEntry depotEntryFromDatabase = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(25.0),
             BigDecimal.valueOf(10.0), BigDecimal.valueOf(1.0));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase, depotEntryFromDatabase));
 
         assertThatExceptionOfType(ResponseStatusException.class).
             isThrownBy(() -> salesHandler.processSale(transaction)).withMessage("400 BAD_REQUEST \"The number of depot entries in the database for "
-            + "the user ID 6, the depot with the name ING Depot and the security name BMW must be one, but was 2\"");
-        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndSecurityName(
+            + "the user ID 6, the depot with the name ING Depot and the ISIN BMW must be one, but was 2\"");
+        verify(depotEntryRepository, times(1)).findDepotEntriesByUserIdAndDepotNameAndIsin(
             userId, depotName, securityName);
         verifyNoMoreInteractions(depotEntryRepository);
         verifyNoInteractions(profitHandler);

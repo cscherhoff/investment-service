@@ -25,8 +25,8 @@ public class ProfitHandler {
     }
 
     public void createProfit(Transaction transaction, DepotEntry depotEntryFromDatabase) {
-        List<Profit> profitList = repository.findProfitsByUserIdAndDepotNameAndSecurityName(
-            transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName()
+        List<Profit> profitList = repository.findProfitsByUserIdAndDepotNameAndIsin(
+            transaction.getUserId(), transaction.getDepotName(), transaction.getIsin()
         );
         if (profitList.size() == 0) {
             createNewProfit(transaction, depotEntryFromDatabase);
@@ -35,7 +35,7 @@ public class ProfitHandler {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The number of profits in the database for "
                 + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
-                + " and the security name " + transaction.getSecurityName() + " should be zero or one, but was " + profitList.size());
+                + " and the ISIN " + transaction.getIsin() + " should be zero or one, but was " + profitList.size());
         }
     }
 
@@ -53,7 +53,7 @@ public class ProfitHandler {
             depotEntry.getCosts().divide(depotEntry.getNumber(), 6, RoundingMode.HALF_UP), transaction.getExpenses());
         BigDecimal grossPercentageProfit = profitCalculator.calculatePercentageProfit(grossAbsoluteProfit, transaction.getNumber(), depotEntry.getSinglePrice());
 
-        profit = new Profit(transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName(), netAbsoluteProfit, grossAbsoluteProfit,
+        profit = new Profit(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurityName(), netAbsoluteProfit, grossAbsoluteProfit,
             netPercentageProfit, grossPercentageProfit);
     }
 
@@ -67,7 +67,7 @@ public class ProfitHandler {
         BigDecimal grossPercentageProfit = profitCalculator.calculatePercentageProfit(grossAbsoluteProfit, profit.getNetAbsoluteProfit(), profit.getNetPercentageProfit(),
             transaction.getNumber(), depotEntry.getSinglePrice());
 
-        this.profit = new Profit(profit.getProfitId(), transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName(), totalNetAbsoluteProfit, grossAbsoluteProfit,
+        this.profit = new Profit(profit.getProfitId(), transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurityName(), totalNetAbsoluteProfit, grossAbsoluteProfit,
             netPercentageProfit, grossPercentageProfit);
 //        repository.save(profit);
     }

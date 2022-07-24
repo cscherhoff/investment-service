@@ -29,23 +29,23 @@ public class BuyHandler {
     }
 
     private DepotEntry getDepotEntryFromDatabase(Transaction transaction) throws DepotEntryNotFound {
-        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(
-                transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName());
+        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(
+                transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
         if(depotEntryList.size()==0) {
             throw new DepotEntryNotFound("There is no depot entry for the user with the ID " + transaction.getUserId() +
-                ", the depot name + " + transaction.getDepotName() + " and the security name " +
-                transaction.getSecurityName());
+                ", the depot name + " + transaction.getDepotName() + " and the ISIN " +
+                transaction.getIsin());
         } else if (depotEntryList.size()>1) {
             throw new IllegalStateException("There is more than one depot entry for the user with the ID " +
-                transaction.getUserId() + ", the depot name + " + transaction.getDepotName() + " and the security name " +
-                transaction.getSecurityName());
+                transaction.getUserId() + ", the depot name + " + transaction.getDepotName() + " and the ISIN " +
+                transaction.getIsin());
         }
         return depotEntryList.get(0);
     }
 
     private DepotEntry createNewDepotEntry(Transaction transaction) {
-        return new DepotEntry(transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName(),
-            transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
+        return new DepotEntry(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(),
+            transaction.getSecurityName(), transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
     }
 
     private void updateDepotEntry(DepotEntry depotEntry, Transaction transaction) {
@@ -54,11 +54,11 @@ public class BuyHandler {
         depotEntry.updateNumber(transaction.getNumber());
     }
 //    public void processBuy(Transaction transaction) {
-//        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(
-//            transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName());
+//        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(
+//            transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
 //        DepotEntry depotEntry;
 //        if (depotEntryList.size() == 0) {
-//            depotEntry = null;//new DepotEntry(transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName(), transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
+//            depotEntry = null;//new DepotEntry(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
 //        }
 //        else if (depotEntryList.size() == 1) {
 //            depotEntry = depotEntryList.get(0);
@@ -74,7 +74,7 @@ public class BuyHandler {
 //        } else {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The number of depot entries in the database for "
 //                + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
-//                + " and the security name " + transaction.getSecurityName() + " should be zero or one, but was " + depotEntryList.size());
+//                + " and the security name " + transaction.getIsin() + " should be zero or one, but was " + depotEntryList.size());
 //        }
 //        depotEntryRepository.save(depotEntry);
 //    }

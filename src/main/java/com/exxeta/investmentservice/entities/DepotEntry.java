@@ -20,6 +20,7 @@ public class DepotEntry {
     @JsonIgnore
     private long userId;
     private String depotName;
+    private String isin;
     private String securityName;
     private BigDecimal number;
     private BigDecimal singlePrice;
@@ -29,27 +30,29 @@ public class DepotEntry {
     public DepotEntry() {
     }
 
-    public DepotEntry(String securityName, BigDecimal number, BigDecimal singlePrice, BigDecimal dividend,
-        BigDecimal costs) {
-        this.securityName = securityName;
-        this.number = number;
-        this.singlePrice = singlePrice;
-        this.dividend = dividend;
-        this.costs = costs;
-    }
-
-    public DepotEntry(String depotName, String securityName, BigDecimal number, BigDecimal singlePrice, BigDecimal costs) {
+    public DepotEntry(String depotName, String isin, BigDecimal number, BigDecimal singlePrice, BigDecimal costs) {
         this.depotName = depotName;
-        this.securityName = securityName;
+        this.isin = isin;
         this.number = number;
         this.singlePrice = singlePrice;
         this.costs = costs;
     }
 
-    public DepotEntry(long userId, String depotName, String securityName, BigDecimal number,
+    public DepotEntry(long userId, String depotName, String isin, BigDecimal number,
         BigDecimal singlePrice, BigDecimal costs) {
         this.userId = userId;
         this.depotName = depotName;
+        this.isin = isin;
+        this.number = number;
+        this.singlePrice = singlePrice;
+        this.costs = costs;
+    }
+
+    public DepotEntry(long userId, String depotName, String isin, String securityName, BigDecimal number,
+                      BigDecimal singlePrice, BigDecimal costs) {
+        this.userId = userId;
+        this.depotName = depotName;
+        this.isin = isin;
         this.securityName = securityName;
         this.number = number;
         this.singlePrice = singlePrice;
@@ -124,7 +127,7 @@ public class DepotEntry {
         }
         DepotEntry that = (DepotEntry) o;
         return Objects.equals(depotName, that.depotName) &&
-            Objects.equals(securityName, that.securityName) &&
+            Objects.equals(isin, that.isin) &&
             Objects.equals(number, that.number) &&
             Objects.equals(singlePrice, that.singlePrice) &&
             Objects.equals(dividend, that.dividend) &&

@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface DepotEntryRepository  extends JpaRepository<DepotEntry, Long> {
     List<DepotEntry> findDepotEntriesByUserId(long userId);
-    List<DepotEntry> findDepotEntriesByUserIdAndDepotNameAndSecurityName(long userId, String depotName, String securityName);
+    List<DepotEntry> findDepotEntriesByUserIdAndDepotNameAndIsin(long userId, String depotName, String isin);
     List<DepotEntry> findDepotEntriesByUserIdAndDepotName(long userId, String depotName);
 }

@@ -33,6 +33,7 @@ public class Transaction {
     private String depotName;
     @NotNull
     private String type;
+    private String isin;
     @NotNull
     private String securityName;
     @NotNull
@@ -48,11 +49,24 @@ public class Transaction {
 
     }
 
-    public Transaction(String depotName, LocalDate date, String type, String securityName,
+    public Transaction(String depotName, LocalDate date, String type, String isin,
         BigDecimal price, BigDecimal number, BigDecimal expenses, BigDecimal totalPrice) {
         this.depotName = depotName;
         this.date = date;
         this.type = type;
+        this.isin = isin;
+        this.price = price;
+        this.number = number;
+        this.expenses = expenses;
+        this.totalPrice = totalPrice;
+    }
+
+    public Transaction(String depotName, LocalDate date, String type, String isin, String securityName,
+                       BigDecimal price, BigDecimal number, BigDecimal expenses, BigDecimal totalPrice) {
+        this.depotName = depotName;
+        this.date = date;
+        this.type = type;
+        this.isin = isin;
         this.securityName = securityName;
         this.price = price;
         this.number = number;
@@ -100,6 +114,10 @@ public class Transaction {
         return totalPrice;
     }
 
+    public String getIsin() {
+        return isin;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -129,7 +147,7 @@ public class Transaction {
             Objects.equals(getDepotName(), that.getDepotName()) &&
             Objects.equals(getDate(), that.getDate()) &&
             Objects.equals(getType(), that.getType()) &&
-            Objects.equals(getSecurityName(), that.getSecurityName()) &&
+            Objects.equals(getIsin(), that.getIsin()) &&
             Objects.equals(getPrice(), that.getPrice()) &&
             Objects.equals(getNumber(), that.getNumber()) &&
             Objects.equals(getExpenses(), that.getExpenses()) &&

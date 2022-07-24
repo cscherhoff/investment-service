@@ -43,14 +43,14 @@ public class TestProfitHandler {
             BigDecimal.valueOf(2.3870).setScale(4, RoundingMode.HALF_UP),
             BigDecimal.valueOf(2.3770).setScale(4, RoundingMode.HALF_UP));
 
-        when(profitRepository.findProfitsByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(profitRepository.findProfitsByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(Collections.emptyList());
         when(profitRepository.save(profitToSaveToDatabase)).thenReturn(null);
 
         profitHandler.createProfit(transaction, depotEntryFromDatabase);
         profitHandler.saveProfit();
 
-        verify(profitRepository, times(1)).findProfitsByUserIdAndDepotNameAndSecurityName(userId,
+        verify(profitRepository, times(1)).findProfitsByUserIdAndDepotNameAndIsin(userId,
             depotName, securityName);
         verify(profitRepository, times(1)).save(profitToSaveToDatabase);
         verifyNoMoreInteractions(profitRepository);
@@ -77,7 +77,7 @@ public class TestProfitHandler {
             BigDecimal.valueOf(2.3870).setScale(4, RoundingMode.HALF_UP),
             BigDecimal.valueOf(2.3770).setScale(4, RoundingMode.HALF_UP));
 
-        when(profitRepository.findProfitsByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(profitRepository.findProfitsByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(profitFromDatabase));
 
         when(profitRepository.save(profitToSaveToDatabase)).thenReturn(null);
@@ -85,7 +85,7 @@ public class TestProfitHandler {
         profitHandler.createProfit(transaction, depotEntryFromDatabase);
         profitHandler.saveProfit();
 
-        verify(profitRepository, times(1)).findProfitsByUserIdAndDepotNameAndSecurityName(userId,
+        verify(profitRepository, times(1)).findProfitsByUserIdAndDepotNameAndIsin(userId,
             depotName, securityName);
         verify(profitRepository, times(1)).save(profitToSaveToDatabase);
         verifyNoMoreInteractions(profitRepository);
@@ -107,13 +107,13 @@ public class TestProfitHandler {
         Profit profitFromDatabase = new Profit(userId, depotName, securityName,
             BigDecimal.valueOf(596.7500), BigDecimal.valueOf(594.2500), BigDecimal.valueOf(2.3870), BigDecimal.valueOf(2.3770));
 
-        when(profitRepository.findProfitsByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(profitRepository.findProfitsByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(profitFromDatabase, profitFromDatabase));
 
         assertThatExceptionOfType(ResponseStatusException.class).
             isThrownBy(() -> profitHandler.createProfit(transaction, depotEntryFromDatabase))
             .withMessage("400 BAD_REQUEST \"The number of profits in the database for the user ID " + userId + ", "
-                + "the depot with the name " + depotName + " and the security name " + securityName
+                + "the depot with the name " + depotName + " and the ISIN " + securityName
                 + " should be zero or one, but was 2\"");
     }
 }

@@ -22,6 +22,7 @@ public class Profit {
     @JsonIgnore
     private String depotName;
 
+    private String isin;
     private String securityName;
     private BigDecimal netAbsoluteProfit;
     private BigDecimal grossAbsoluteProfit;
@@ -41,10 +42,22 @@ public class Profit {
 //        this.grossPercentageProfit = grossPercentageProfit;
 //    }
 
-    public Profit(long userId, String depotName, String securityName, BigDecimal netAbsoluteProfit,
+    public Profit(long userId, String depotName, String isin, BigDecimal netAbsoluteProfit,
         BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
         this.userId = userId;
         this.depotName = depotName;
+        this.isin = isin;
+        this.netAbsoluteProfit = netAbsoluteProfit;
+        this.grossAbsoluteProfit = grossAbsoluteProfit;
+        this.netPercentageProfit = netPercentageProfit;
+        this.grossPercentageProfit = grossPercentageProfit;
+    }
+
+    public Profit(long userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
+                  BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
+        this.userId = userId;
+        this.depotName = depotName;
+        this.isin = isin;
         this.securityName = securityName;
         this.netAbsoluteProfit = netAbsoluteProfit;
         this.grossAbsoluteProfit = grossAbsoluteProfit;
@@ -52,11 +65,12 @@ public class Profit {
         this.grossPercentageProfit = grossPercentageProfit;
     }
 
-    public Profit(long profitId, long userId, String depotName, String securityName, BigDecimal netAbsoluteProfit,
+    public Profit(long profitId, long userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
         BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
         this.profitId = profitId;
         this.userId = userId;
         this.depotName = depotName;
+        this.isin = isin;
         this.securityName = securityName;
         this.netAbsoluteProfit = netAbsoluteProfit;
         this.grossAbsoluteProfit = grossAbsoluteProfit;
@@ -102,7 +116,7 @@ public class Profit {
         }
         Profit profit = (Profit) o;
         return Objects.equals(depotName, profit.depotName) &&
-            Objects.equals(securityName, profit.securityName) &&
+            Objects.equals(isin, profit.isin) &&
             Objects.equals(netAbsoluteProfit, profit.netAbsoluteProfit) &&
             Objects.equals(grossAbsoluteProfit, profit.grossAbsoluteProfit) &&
             Objects.equals(netPercentageProfit, profit.netPercentageProfit) &&

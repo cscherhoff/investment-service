@@ -31,13 +31,13 @@ public class TestBuyHandler {
         DepotEntry createdDepotEntry = new DepotEntry(userId, depotName, securityName, transaction.getNumber(),
             transaction.getPrice(), transaction.getExpenses());
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(Collections.emptyList());
 
         buyHandler.processBuy(transaction);
 
         verify(depotEntryRepository, times(1))
-            .findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName);
+            .findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName);
         verify(depotEntryRepository, times(1)).save(createdDepotEntry);
         verifyNoMoreInteractions(depotEntryRepository);
     }
@@ -58,13 +58,13 @@ public class TestBuyHandler {
         DepotEntry updatedDepotEntry = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(125.0),
             BigDecimal.valueOf(11.669080000).setScale(9, RoundingMode.HALF_UP), BigDecimal.valueOf(3.0));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase));
 
         buyHandler.processBuy(transaction);
 
         verify(depotEntryRepository, times(1))
-            .findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName);
+            .findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName);
         verify(depotEntryRepository, times(1)).save(updatedDepotEntry);
         verifyNoMoreInteractions(depotEntryRepository);
     }
@@ -81,7 +81,7 @@ public class TestBuyHandler {
         DepotEntry depotEntryFromDatabase = new DepotEntry(userId, depotName, securityName, BigDecimal.valueOf(120.5),
             BigDecimal.valueOf(10.84), BigDecimal.valueOf(1.5));
 
-        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName))
+        when(depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(depotEntryFromDatabase, depotEntryFromDatabase));
 
 //        try {
@@ -93,7 +93,7 @@ public class TestBuyHandler {
         assertThatExceptionOfType(IllegalStateException.class).
             isThrownBy(() -> buyHandler.processBuy(transaction));
         verify(depotEntryRepository, times(1))
-            .findDepotEntriesByUserIdAndDepotNameAndSecurityName(userId, depotName, securityName);
+            .findDepotEntriesByUserIdAndDepotNameAndIsin(userId, depotName, securityName);
         verifyNoMoreInteractions(depotEntryRepository);
     }
 }

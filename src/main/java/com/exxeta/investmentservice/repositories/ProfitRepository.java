@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProfitRepository extends JpaRepository<Profit, Long> {
     List<Profit> findProfitsByUserId(long userId);
-    List<Profit> findProfitsByUserIdAndDepotNameAndSecurityName(long userId, String depotName, String securityName);
+    List<Profit> findProfitsByUserIdAndDepotNameAndIsin(long userId, String depotName, String isin);
 }

@@ -57,11 +57,11 @@ public class DividendHandler {
                 + depotEntry.getNumber() + ") is not the same as the transaction (" + transaction.getNumber() + ")");
         }
         DepotEntry depotEntryFromDividend = new DepotEntry(transaction.getUserId(), transaction.getDepotName(),
-                transaction.getSecurityName(), transaction.getNumber(), depotEntry.getSinglePrice(), depotEntry.getCosts());
+                transaction.getIsin(), transaction.getSecurityName(), transaction.getNumber(), depotEntry.getSinglePrice(), depotEntry.getCosts());
         BigDecimal transactionPrice = depotEntry.getSinglePrice().add(transaction.getTotalPrice().
             divide(transaction.getNumber(), 6, RoundingMode.HALF_UP));
         Transaction transactionFromDividend = new Transaction(transaction.getDepotName(), transaction.getDate(),
-            transaction.getType(), transaction.getSecurityName(), transactionPrice, transaction.getNumber(),
+            transaction.getType(), transaction.getIsin(), transaction.getSecurityName(), transactionPrice, transaction.getNumber(),
             transaction.getExpenses(), transaction.getTotalPrice());
         transactionFromDividend.setUserId(transaction.getUserId());
         profitHandler.createProfit(transactionFromDividend, depotEntryFromDividend);
@@ -69,15 +69,15 @@ public class DividendHandler {
     }
 
     private DepotEntry getDepotEntryFromDatabase(Transaction transaction) {
-        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndSecurityName(
-            transaction.getUserId(), transaction.getDepotName(), transaction.getSecurityName());
+        List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(
+            transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
 
         if (depotEntryList.size() == 1) {
             return depotEntryList.get(0);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The number of depot entries in the database for "
                 + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
-                + " and the security name " + transaction.getSecurityName() + " must be one, but was " + depotEntryList.size());
+                + " and the ISIN " + transaction.getIsin() + " must be one, but was " + depotEntryList.size());
         }
     }
 }
