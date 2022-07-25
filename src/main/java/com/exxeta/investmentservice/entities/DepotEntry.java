@@ -117,6 +117,10 @@ public class DepotEntry {
         return costs;
     }
 
+    public String getIsin() {
+        return isin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
