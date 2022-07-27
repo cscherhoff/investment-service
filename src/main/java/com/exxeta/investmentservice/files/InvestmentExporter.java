@@ -112,9 +112,9 @@ public class InvestmentExporter {
     }
 
     private String transactionToString(Transaction transaction) {
-        return transaction.getDate() + ";" + transaction.getDepotName() + ";" + transaction.getType() + ";" +
-            transaction.getSecurityName() + ";" + transaction.getNumber() + ";" + transaction.getPrice() + ";" +
-            transaction.getExpenses() + ";" + transaction.getTotalPrice();
+        return transaction.getDate() + ";" + transaction.getDepotName() + ";" + transaction.getType() + ";"
+                + transaction.getIsin() + ";" + transaction.getSecurityName() + ";" + transaction.getNumber() + ";"
+                + transaction.getPrice() + ";" + transaction.getExpenses() + ";" + transaction.getTotalPrice();
     }
 
     private String depotEntryToString(DepotEntry depotEntry) {

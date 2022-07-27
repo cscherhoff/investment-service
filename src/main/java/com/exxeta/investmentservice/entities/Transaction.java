@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,9 +31,11 @@ public class Transaction {
     private String depotName;
     @NotNull
     private String type;
-    private String isin;
-    @NotNull
-    private String securityName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "security")
+    private Security security;
+
     @NotNull
     private BigDecimal number;
     @NotNull
@@ -54,7 +54,7 @@ public class Transaction {
         this.depotName = depotName;
         this.date = date;
         this.type = type;
-        this.isin = isin;
+        this.security = new Security(isin, "placeHolderName");
         this.price = price;
         this.number = number;
         this.expenses = expenses;
@@ -66,8 +66,7 @@ public class Transaction {
         this.depotName = depotName;
         this.date = date;
         this.type = type;
-        this.isin = isin;
-        this.securityName = securityName;
+        this.security = new Security(isin, securityName);
         this.price = price;
         this.number = number;
         this.expenses = expenses;
@@ -95,7 +94,7 @@ public class Transaction {
     }
 
     public String getSecurityName() {
-        return securityName;
+        return security.getSecurityName();
     }
 
     public BigDecimal getPrice() {
@@ -115,7 +114,7 @@ public class Transaction {
     }
 
     public String getIsin() {
-        return isin;
+        return security.getIsin();
     }
 
     @Override
@@ -126,7 +125,7 @@ public class Transaction {
             ", depotName='" + depotName + '\'' +
             ", date=" + date +
             ", type='" + type + '\'' +
-            ", securityName='" + securityName + '\'' +
+            ", securityName='" + security.getSecurityName() + '\'' +
             ", price=" + price +
             ", number=" + number +
             ", expenses=" + expenses +

@@ -4,6 +4,8 @@ import com.exxeta.investmentservice.entities.DepotEntry;
 import com.exxeta.investmentservice.entities.Profit;
 import com.exxeta.investmentservice.repositories.DepotEntryRepository;
 import com.exxeta.investmentservice.repositories.ProfitRepository;
+import com.exxeta.investmentservice.repositories.SecurityRepository;
+import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -17,9 +19,11 @@ public class TestService {
 
     private final DepotEntryRepository depotEntryRepository = mock(DepotEntryRepository.class);
     private final ProfitRepository profitRepository = mock(ProfitRepository.class);
+    private final SecurityRepository securityRepository = mock(SecurityRepository.class);
+    private final TransactionRepository transactionRepository = mock(TransactionRepository.class);
 //    private final KafkaTemplate<String, String> kafkaTemplate = mock(KafkaTemplate.class);
 
-    private final InvestmentService investmentService = new InvestmentService(depotEntryRepository, profitRepository);
+    private final InvestmentService investmentService = new InvestmentService(depotEntryRepository, profitRepository, securityRepository, transactionRepository);
 
     private final long userId = 6;
     private final String depotName = "ING Depot";
