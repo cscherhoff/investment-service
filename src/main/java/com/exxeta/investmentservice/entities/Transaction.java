@@ -73,6 +73,18 @@ public class Transaction {
         this.totalPrice = totalPrice;
     }
 
+    public Transaction(long userId, @NotNull LocalDate date, @NotNull String depotName, @NotNull String type, Security security, @NotNull BigDecimal number, @NotNull BigDecimal price, @NotNull BigDecimal expenses, @NotNull BigDecimal totalPrice) {
+        this.userId = userId;
+        this.date = date;
+        this.depotName = depotName;
+        this.type = type;
+        this.security = security;
+        this.number = number;
+        this.price = price;
+        this.expenses = expenses;
+        this.totalPrice = totalPrice;
+    }
+
     public long getUserId() {
         return userId;
     }
@@ -93,8 +105,8 @@ public class Transaction {
         return type;
     }
 
-    public String getSecurityName() {
-        return security.getSecurityName();
+    public Security getSecurity() {
+        return security;
     }
 
     public BigDecimal getPrice() {

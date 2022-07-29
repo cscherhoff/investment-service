@@ -82,6 +82,10 @@ public class Profit {
         return profitId;
     }
 
+    public String getIsin() {
+        return isin;
+    }
+
     public String getSecurityName() {
         return securityName;
     }

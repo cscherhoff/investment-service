@@ -45,7 +45,7 @@ public class BuyHandler {
 
     private DepotEntry createNewDepotEntry(Transaction transaction) {
         return new DepotEntry(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(),
-            transaction.getSecurityName(), transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
+            transaction.getSecurity().getSecurityName(), transaction.getNumber(), transaction.getPrice(), transaction.getExpenses());
     }
 
     private void updateDepotEntry(DepotEntry depotEntry, Transaction transaction) {

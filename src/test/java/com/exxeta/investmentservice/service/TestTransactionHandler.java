@@ -1,6 +1,7 @@
 package com.exxeta.investmentservice.service;
 
 import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.repositories.SecurityRepository;
 import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,10 @@ public class TestTransactionHandler {
     private final BuyHandler buyHandler = mock(BuyHandler.class);
     private final SalesHandler salesHandler = mock(SalesHandler.class);
     private final DividendHandler dividendHandler = mock(DividendHandler.class);
+    private final SecurityRepository securityRepository = mock(SecurityRepository.class);
 
     private final TransactionHandler transactionHandler = new TransactionHandler(transactionRepository, buyHandler,
-        salesHandler, dividendHandler);
+        salesHandler, dividendHandler, securityRepository);
 
     @Test
     public void testHandleTransactionBuy() {

@@ -53,7 +53,7 @@ public class ProfitHandler {
             depotEntry.getCosts().divide(depotEntry.getNumber(), 6, RoundingMode.HALF_UP), transaction.getExpenses());
         BigDecimal grossPercentageProfit = profitCalculator.calculatePercentageProfit(grossAbsoluteProfit, transaction.getNumber(), depotEntry.getSinglePrice());
 
-        profit = new Profit(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurityName(), netAbsoluteProfit, grossAbsoluteProfit,
+        profit = new Profit(transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurity().getSecurityName(), netAbsoluteProfit, grossAbsoluteProfit,
             netPercentageProfit, grossPercentageProfit);
     }
 
@@ -67,7 +67,7 @@ public class ProfitHandler {
         BigDecimal grossPercentageProfit = profitCalculator.calculatePercentageProfit(grossAbsoluteProfit, profit.getNetAbsoluteProfit(), profit.getNetPercentageProfit(),
             transaction.getNumber(), depotEntry.getSinglePrice());
 
-        this.profit = new Profit(profit.getProfitId(), transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurityName(), totalNetAbsoluteProfit, grossAbsoluteProfit,
+        this.profit = new Profit(profit.getProfitId(), transaction.getUserId(), transaction.getDepotName(), transaction.getIsin(), transaction.getSecurity().getSecurityName(), totalNetAbsoluteProfit, grossAbsoluteProfit,
             netPercentageProfit, grossPercentageProfit);
 //        repository.save(profit);
     }

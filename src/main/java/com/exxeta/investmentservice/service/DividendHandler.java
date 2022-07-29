@@ -57,11 +57,11 @@ public class DividendHandler {
                 + depotEntry.getNumber() + ") is not the same as the transaction (" + transaction.getNumber() + ")");
         }
         DepotEntry depotEntryFromDividend = new DepotEntry(transaction.getUserId(), transaction.getDepotName(),
-                transaction.getIsin(), transaction.getSecurityName(), transaction.getNumber(), depotEntry.getSinglePrice(), depotEntry.getCosts());
+                transaction.getIsin(), transaction.getSecurity().getSecurityName(), transaction.getNumber(), depotEntry.getSinglePrice(), depotEntry.getCosts());
         BigDecimal transactionPrice = depotEntry.getSinglePrice().add(transaction.getTotalPrice().
             divide(transaction.getNumber(), 6, RoundingMode.HALF_UP));
         Transaction transactionFromDividend = new Transaction(transaction.getDepotName(), transaction.getDate(),
-            transaction.getType(), transaction.getIsin(), transaction.getSecurityName(), transactionPrice, transaction.getNumber(),
+            transaction.getType(), transaction.getIsin(), transaction.getSecurity().getSecurityName(), transactionPrice, transaction.getNumber(),
             transaction.getExpenses(), transaction.getTotalPrice());
         transactionFromDividend.setUserId(transaction.getUserId());
         profitHandler.createProfit(transactionFromDividend, depotEntryFromDividend);

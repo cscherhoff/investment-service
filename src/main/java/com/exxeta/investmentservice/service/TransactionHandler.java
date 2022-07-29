@@ -1,10 +1,14 @@
 package com.exxeta.investmentservice.service;
 
+import com.exxeta.investmentservice.entities.Security;
 import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.repositories.SecurityRepository;
 import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class TransactionHandler {
@@ -14,15 +18,17 @@ public class TransactionHandler {
     private final BuyHandler buyHandler;
     private final SalesHandler salesHandler;
     private final DividendHandler dividendHandler;
+    private final SecurityRepository securityRepository;
 
     private final Logger logger = LoggerFactory.getLogger(TransactionHandler.class);
 
     public TransactionHandler(TransactionRepository transactionRepository, BuyHandler buyHandler,
-                              SalesHandler salesHandler, DividendHandler dividendHandler) {
+                              SalesHandler salesHandler, DividendHandler dividendHandler, SecurityRepository securityRepository) {
         this.transactionRepository = transactionRepository;
         this.buyHandler = buyHandler;
         this.salesHandler = salesHandler;
         this.dividendHandler = dividendHandler;
+        this.securityRepository = securityRepository;
     }
 
     public void handleTransaction(Transaction transaction) {
@@ -49,6 +55,10 @@ public class TransactionHandler {
     }
 
     private void saveTransactionToDatabase(Transaction transaction) {
+        Optional<Security> optionalSecurity = securityRepository.findByIsin(transaction.getIsin());
+        if (!optionalSecurity.isPresent()) {
+            securityRepository.save(transaction.getSecurity());
+        }
         transactionRepository.save(transaction);
         logger.info("Successfully saved the transaction to the database.");
     }
