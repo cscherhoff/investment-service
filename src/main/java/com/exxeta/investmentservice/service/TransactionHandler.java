@@ -48,8 +48,26 @@ public class TransactionHandler {
             case "Dividend":
                 dividendHandler.processDividend(transaction);
                 break;
+            case "TransferFromDepot":
+                if (transaction.getTotalPrice().signum()==1) {
+                    transaction.setTotalPrice(transaction.getTotalPrice().negate());
+                }
+            case "Transfer":
+                if (transaction.getTotalPrice().signum()==-1) {
+                    transaction.setType("TransferFromDepot");
+                    transaction.setTotalPrice(transaction.getTotalPrice().negate());
+                    break;
+                } else if (transaction.getTotalPrice().signum()==1) {
+                    transaction.setType("TransferToDepot");
+                    break;
+                } else {
+                    System.out.println("ERROR: WRONG SIGNUM: " + transaction.getTotalPrice());
+                }
             default:
                 break;
+        }
+        if (transaction.getExpenses().signum()==-1) {
+            transaction.setExpenses(transaction.getExpenses().negate());
         }
         saveTransactionToDatabase(transaction);
     }
