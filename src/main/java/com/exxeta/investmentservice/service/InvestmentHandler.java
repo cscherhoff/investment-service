@@ -38,7 +38,9 @@ public class InvestmentHandler {
         List<Transaction> transactionList = transactionRepository.findAllByUserId(userId);
         BigDecimal alreadyInvested = BigDecimal.ZERO;
         for (Transaction transaction: transactionList) {
-            if(transaction.getType().equals("Buy")) {
+            if(transaction.getType().equals("TransferFromDepot")) {
+                alreadyInvested = alreadyInvested.subtract(transaction.getTotalPrice());
+            } else if (transaction.getType().equals("TransferToDepot")) {
                 alreadyInvested = alreadyInvested.add(transaction.getTotalPrice());
             }
         }
