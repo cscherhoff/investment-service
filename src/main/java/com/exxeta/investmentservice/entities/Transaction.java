@@ -33,7 +33,7 @@ public class Transaction {
     private String type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "security")
+    @JoinColumn(name = "ISIN")
     private Security security;
 
     @NotNull
@@ -73,7 +73,9 @@ public class Transaction {
         this.totalPrice = totalPrice;
     }
 
-    public Transaction(long userId, @NotNull LocalDate date, @NotNull String depotName, @NotNull String type, Security security, @NotNull BigDecimal number, @NotNull BigDecimal price, @NotNull BigDecimal expenses, @NotNull BigDecimal totalPrice) {
+    public Transaction(long userId, @NotNull LocalDate date, @NotNull String depotName, @NotNull String type,
+                       Security security, @NotNull BigDecimal number, @NotNull BigDecimal price,
+                       @NotNull BigDecimal expenses, @NotNull BigDecimal totalPrice) {
         this.userId = userId;
         this.date = date;
         this.depotName = depotName;
@@ -127,6 +129,18 @@ public class Transaction {
 
     public String getIsin() {
         return security.getIsin();
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setExpenses(BigDecimal expenses) {
+        this.expenses = expenses;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override

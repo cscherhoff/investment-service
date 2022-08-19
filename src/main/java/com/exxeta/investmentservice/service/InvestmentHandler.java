@@ -7,7 +7,10 @@ import com.exxeta.investmentservice.repositories.InvestmentRepository;
 import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,9 +30,9 @@ public class InvestmentHandler {
     }
 
     public InvestedInformation getInvestedInformation(long userId) {
-        BigDecimal alreadyInvested = calculateAlreadyInvested(userId);
+        BigDecimal alreadyInvested = calculateAlreadyInvested(userId).subtract(BigDecimal.valueOf(5514.8));
         BigDecimal dedicatedToInvest = calculateAmountDedicatedToInvest(userId);
-        BigDecimal investable = dedicatedToInvest.subtract(alreadyInvested.subtract(BigDecimal.valueOf(5514.8)));
+        BigDecimal investable = dedicatedToInvest.subtract(alreadyInvested);
 
         return new InvestedInformation(dedicatedToInvest, alreadyInvested, investable);
     }
@@ -55,4 +58,16 @@ public class InvestmentHandler {
         }
         return dedicatedToInvest;
     }
+
+//    @PostConstruct
+//    public void fillDatabase() {
+//        List<Investment> investmentList = new ArrayList<>();
+//
+//        for (int i=0; i<40; i++) {
+//            LocalDate date = LocalDate.of(2019, 5, 1).plusMonths(i);
+//            Investment info = new Investment(1234567L, date, 800);
+//            investmentList.add(info);
+//        }
+//        investmentRepository.saveAll(investmentList);
+//    }
 }

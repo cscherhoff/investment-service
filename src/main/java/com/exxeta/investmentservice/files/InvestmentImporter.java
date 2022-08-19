@@ -1,11 +1,14 @@
 package com.exxeta.investmentservice.files;
 
 import com.exxeta.investmentservice.entities.Investment;
+import com.exxeta.investmentservice.entities.Security;
 import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.service.TransactionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,13 +25,23 @@ public class InvestmentImporter {
     private final String transactionImportFileName = "transactions.csv";
     private final String investmentImportFileName = "investitionsListe.csv";
 
+    private final TransactionHandler transactionHandler;
+
     private final Logger logger = LoggerFactory.getLogger(InvestmentImporter.class);
 
-    public List<Transaction> loadTransactionList() {
+    public InvestmentImporter(TransactionHandler transactionHandler) {
+        this.transactionHandler = transactionHandler;
+    }
+
+    public void loadTransactionList() {
         logger.info("Importing transactions:");
         List<String> stringList = getListFromCsvFile(transactionImportFileName);
+        stringList.remove(0);
         logger.info("converting strings into transactions.");
-        return convertStringListIntoTransactionList(stringList);
+
+        List<Transaction> transactionList = convertStringListIntoTransactionList(stringList);
+        transactionList.forEach(transactionHandler::handleTransaction);
+//        return transactionList;
     }
 
     public List<Investment> loadInvestmentList() {
@@ -76,11 +89,16 @@ public class InvestmentImporter {
     private Transaction convertStringToTransaction(String transactionString) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String[] row_string = transactionString.split(";");
-        return new Transaction(row_string[1], LocalDate.parse(row_string[0], dateTimeFormatter), row_string[2], row_string[3],
+        return new Transaction(
+                1234567L,
+                LocalDate.parse(row_string[2].substring(1,row_string[2].length()-1), dateTimeFormatter),
+                row_string[3].substring(1, row_string[3].length()-1),
+                row_string[9].substring(1, row_string[9].length()-1),
+                new Security(row_string[7].substring(1, row_string[7].length()-1), row_string[7].substring(1, row_string[7].length()-1)),
                 BigDecimal.valueOf(Double.parseDouble(row_string[5])),
-                BigDecimal.valueOf(Double.parseDouble(row_string[4])),
                 BigDecimal.valueOf(Double.parseDouble(row_string[6])),
-                BigDecimal.valueOf(Double.parseDouble(row_string[7]))
+                BigDecimal.valueOf(Double.parseDouble(row_string[4])),
+                BigDecimal.valueOf(Double.parseDouble(row_string[8]))
         );
     }
 

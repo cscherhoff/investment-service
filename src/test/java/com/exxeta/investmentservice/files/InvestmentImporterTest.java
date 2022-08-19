@@ -18,11 +18,11 @@ public class InvestmentImporterTest {
     @Test
     @Disabled
     public void importerTest() throws IOException {
-        exportTest();
+//        exportTest();
 
-        InvestmentImporter investmentImporter = new InvestmentImporter();
-        List<Transaction> transactionList = investmentImporter.loadTransactionList();
-        assertEquals(1, transactionList.size(), "The number of lines in the file should be 1");
+//        InvestmentImporter investmentImporter = new InvestmentImporter(null);
+//        List<Transaction> transactionList = investmentImporter.loadTransactionList();
+//        assertEquals(234, transactionList.size(), "The number of lines in the file should be 1");
     }
 
     private void exportTest() throws IOException {

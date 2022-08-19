@@ -10,7 +10,7 @@ import java.util.Collection;
 public class Security {
 
     @Id
-    @Column(length = 13)
+    @Column(length = 55)
     private String isin;
 
     @JsonIgnore
