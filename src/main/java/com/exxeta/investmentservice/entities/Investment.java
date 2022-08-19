@@ -36,6 +36,12 @@ public class Investment {
 
     }
 
+    public Investment(long userId, @NotNull LocalDate date, @NotNull double amount) {
+        this.userId = userId;
+        this.date = date;
+        this.amount = amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
