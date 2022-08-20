@@ -25,15 +25,15 @@ public class ProfitCalculator {
     }
 
     protected BigDecimal calculatePercentageProfit(BigDecimal absoluteProfit, BigDecimal numberSold, BigDecimal averagePriceForBuying) {
-        return absoluteProfit.divide(numberSold.multiply(averagePriceForBuying), 4, RoundingMode.HALF_UP);
+        return absoluteProfit.divide(numberSold.multiply(averagePriceForBuying), 10, RoundingMode.HALF_UP);
     }
 
     protected BigDecimal calculatePercentageProfit(BigDecimal absoluteProfit, BigDecimal netAbsoluteProfitFromEarlierProfits,
         BigDecimal netPercentageProfitFromEarlierProfits, BigDecimal numberSold, BigDecimal averagePriceForBuying) {
         BigDecimal boughtFromEarlier = netAbsoluteProfitFromEarlierProfits
-            .divide(netPercentageProfitFromEarlierProfits, 6, RoundingMode.HALF_UP);
+            .divide(netPercentageProfitFromEarlierProfits, 10, RoundingMode.HALF_UP);
         BigDecimal boughtFromNewTransaction = numberSold.multiply(averagePriceForBuying);
         BigDecimal boughtTotal = boughtFromEarlier.add(boughtFromNewTransaction);
-        return absoluteProfit.divide(boughtTotal, 4, RoundingMode.HALF_UP);
+        return absoluteProfit.divide(boughtTotal, 10, RoundingMode.HALF_UP);
     }
 }

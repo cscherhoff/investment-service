@@ -2,10 +2,7 @@ package com.exxeta.investmentservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -26,7 +23,10 @@ public class Profit {
     private String securityName;
     private BigDecimal netAbsoluteProfit;
     private BigDecimal grossAbsoluteProfit;
+
+    @Column(columnDefinition = "DECIMAL(13,9)")
     private BigDecimal netPercentageProfit;
+    @Column(columnDefinition = "DECIMAL(13,9)")
     private BigDecimal grossPercentageProfit;
 
     public Profit() {
