@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,6 +71,21 @@ public class TransactionHandler {
             transaction.setExpenses(transaction.getExpenses().negate());
         }
         saveTransactionToDatabase(transaction);
+    }
+
+    public String recalculateAll(long userId) {
+        List<Transaction> transactionList = transactionRepository.findAllByUserIdOrderByDate(userId);
+        int start = 260;
+        int end = 285;
+        for(int i = start; i<end; i++) {
+            Transaction transaction = transactionList.get(i);
+            logger.info("Handling the following transaction (" + i + "): " + transaction);
+            handleTransaction(transaction);
+        }
+//        for (Transaction transaction: transactionList) {
+//            handleTransaction(transaction);
+//        }
+        return "Successfully recalculated dept entries and profits for all transactions";
     }
 
     private void saveTransactionToDatabase(Transaction transaction) {
