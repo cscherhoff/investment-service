@@ -27,7 +27,7 @@ public class TestProfitCalculator {
         BigDecimal priceForBuying = BigDecimal.valueOf(16.24354);
         BigDecimal netProfitAbsolute = BigDecimal.valueOf(25.2794);
 
-        BigDecimal expected = BigDecimal.valueOf(0.5188);
+        BigDecimal expected = BigDecimal.valueOf(0.5187580211);
         BigDecimal actual = profitCalculator.calculatePercentageProfit(netProfitAbsolute, numberSold, priceForBuying);
 
         assertEquals(expected.doubleValue(), actual.doubleValue(), 0.0, "The net percentage profits have to be the same!");
@@ -55,7 +55,7 @@ public class TestProfitCalculator {
         BigDecimal priceForBuying = BigDecimal.valueOf(16.2435);
         BigDecimal grossAbsoluteProfit = BigDecimal.valueOf(24.0486);
 
-        BigDecimal expected = BigDecimal.valueOf(0.4935);
+        BigDecimal expected = BigDecimal.valueOf(0.4935020162);
 
         BigDecimal actual = profitCalculator.calculatePercentageProfit(grossAbsoluteProfit, numberSold, priceForBuying);
         assertEquals(expected.doubleValue(), actual.doubleValue(), 0.0, "The gross percentage profits have to be the same!");
@@ -83,7 +83,7 @@ public class TestProfitCalculator {
         BigDecimal netAbsoluteProfitFromEarlierProfits = BigDecimal.valueOf(25.2794);
         BigDecimal netPercentageProfitFromEarlierProfits = BigDecimal.valueOf(0.5188);
 
-        BigDecimal expected = BigDecimal.valueOf(0.5754);
+        BigDecimal expected = BigDecimal.valueOf(0.5754048665);
         BigDecimal actual = profitCalculator.calculatePercentageProfit(totalNetAbsoluteProfit,
             netAbsoluteProfitFromEarlierProfits, netPercentageProfitFromEarlierProfits, numberSold, averagePriceForBuying);
 
@@ -118,7 +118,7 @@ public class TestProfitCalculator {
             .calculatePercentageProfit(absoluteProfit, netAbsoluteProfitFromEarlierProfits,
             netPercentageProfitFromEarlierProfits, numberSold, averagePriceBought);
 
-        BigDecimal expected = BigDecimal.valueOf(0.5625);
+        BigDecimal expected = BigDecimal.valueOf(0.5625496925);
         assertEquals(expected.doubleValue(), actual.doubleValue(), 0.0, "The gross percentage profits have to be the same!");
     }
 }

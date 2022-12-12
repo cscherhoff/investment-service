@@ -40,8 +40,8 @@ public class TestProfitHandler {
         Profit profitToSaveToDatabase = new Profit(userId, depotName, securityName,
             BigDecimal.valueOf(596.7500).setScale(4, RoundingMode.HALF_UP),
             BigDecimal.valueOf(594.2500).setScale(4, RoundingMode.HALF_UP),
-            BigDecimal.valueOf(2.3870).setScale(4, RoundingMode.HALF_UP),
-            BigDecimal.valueOf(2.3770).setScale(4, RoundingMode.HALF_UP));
+            BigDecimal.valueOf(2.3870000000).setScale(10, RoundingMode.HALF_UP),
+            BigDecimal.valueOf(2.3770000000).setScale(10, RoundingMode.HALF_UP));
 
         when(profitRepository.findProfitsByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(Collections.emptyList());
@@ -74,8 +74,8 @@ public class TestProfitHandler {
         Profit profitToSaveToDatabase = new Profit(userId, depotName, securityName,
             BigDecimal.valueOf(1193.5000).setScale(4, RoundingMode.HALF_UP),
             BigDecimal.valueOf(1188.50000000).setScale(8, RoundingMode.HALF_UP),
-            BigDecimal.valueOf(2.3870).setScale(4, RoundingMode.HALF_UP),
-            BigDecimal.valueOf(2.3770).setScale(4, RoundingMode.HALF_UP));
+            BigDecimal.valueOf(2.3870000000).setScale(10, RoundingMode.HALF_UP),
+            BigDecimal.valueOf(2.3770000000).setScale(10, RoundingMode.HALF_UP));
 
         when(profitRepository.findProfitsByUserIdAndDepotNameAndIsin(userId, depotName, securityName))
             .thenReturn(List.of(profitFromDatabase));
