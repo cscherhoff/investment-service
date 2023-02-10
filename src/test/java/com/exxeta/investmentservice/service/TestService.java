@@ -2,6 +2,7 @@ package com.exxeta.investmentservice.service;
 
 import com.exxeta.investmentservice.entities.DepotEntry;
 import com.exxeta.investmentservice.entities.Profit;
+import com.exxeta.investmentservice.files.InvestmentExporter;
 import com.exxeta.investmentservice.repositories.DepotEntryRepository;
 import com.exxeta.investmentservice.repositories.ProfitRepository;
 import com.exxeta.investmentservice.repositories.SecurityRepository;
@@ -22,8 +23,9 @@ public class TestService {
     private final SecurityRepository securityRepository = mock(SecurityRepository.class);
     private final TransactionRepository transactionRepository = mock(TransactionRepository.class);
 //    private final KafkaTemplate<String, String> kafkaTemplate = mock(KafkaTemplate.class);
+    private final InvestmentExporter investmentExporter = mock(InvestmentExporter.class);
 
-    private final InvestmentService investmentService = new InvestmentService(depotEntryRepository, profitRepository, securityRepository, transactionRepository);
+    private final InvestmentService investmentService = new InvestmentService(depotEntryRepository, profitRepository, securityRepository, transactionRepository, investmentExporter);
 
     private final long userId = 6;
     private final String depotName = "ING Depot";

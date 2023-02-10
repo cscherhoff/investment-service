@@ -1,5 +1,6 @@
 package com.exxeta.investmentservice.files;
 
+import com.exxeta.investmentservice.entities.AccountMovement;
 import com.exxeta.investmentservice.entities.Investment;
 import com.exxeta.investmentservice.entities.Security;
 import com.exxeta.investmentservice.entities.Transaction;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.security.auth.login.AccountException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,9 +27,13 @@ public class InvestmentImporter {
     private final String transactionImportFileName = "transactions.csv";
     private final String investmentImportFileName = "investitionsListe.csv";
 
+    private final String accountMovementImportFileName = "accountmovement.csv";
+
     private final TransactionHandler transactionHandler;
 
     private final Logger logger = LoggerFactory.getLogger(InvestmentImporter.class);
+
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public InvestmentImporter(TransactionHandler transactionHandler) {
         this.transactionHandler = transactionHandler;
@@ -36,12 +42,19 @@ public class InvestmentImporter {
     public void loadTransactionList() {
         logger.info("Importing transactions:");
         List<String> stringList = getListFromCsvFile(transactionImportFileName);
-        stringList.remove(0);
+//        stringList.remove(0);//TODO: check if this is really needed
         logger.info("converting strings into transactions.");
 
         List<Transaction> transactionList = convertStringListIntoTransactionList(stringList);
-        transactionList.forEach(transactionHandler::handleTransaction);
+        transactionList.forEach(transactionHandler::handleTransaction);//TODO: Move this part out of here
 //        return transactionList;
+    }
+
+    public List<AccountMovement> importAccountMovementList() {
+        logger.info("Importing account movements");
+        List<String> stringList = getListFromCsvFile(accountMovementImportFileName);
+        logger.info("converting strings into account movements");
+        return convertStringListIntoAccountMovementList(stringList);
     }
 
     public List<Investment> loadInvestmentList() {
@@ -87,6 +100,21 @@ public class InvestmentImporter {
     }
 
     private Transaction convertStringToTransaction(String transactionString) {
+        String[] row_string = transactionString.split(";");
+        return new Transaction(
+                1234567,
+                LocalDate.parse(row_string[0], dateTimeFormatter),
+                row_string[1],
+                row_string[2],
+                new Security(row_string[3], row_string[4]),
+                BigDecimal.valueOf(Double.parseDouble(row_string[5])),
+                BigDecimal.valueOf(Double.parseDouble(row_string[6])),
+                BigDecimal.valueOf(Double.parseDouble(row_string[7])),
+                BigDecimal.valueOf(Double.parseDouble(row_string[8]))
+        );
+    }
+
+    private Transaction convertStringToTransaction_old(String transactionString) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String[] row_string = transactionString.split(";");
         return new Transaction(
@@ -99,6 +127,23 @@ public class InvestmentImporter {
                 BigDecimal.valueOf(Double.parseDouble(row_string[6])),
                 BigDecimal.valueOf(Double.parseDouble(row_string[4])),
                 BigDecimal.valueOf(Double.parseDouble(row_string[8]))
+        );
+    }
+
+    private List<AccountMovement> convertStringListIntoAccountMovementList(List<String> stringList) {
+        List<AccountMovement> accountMovementList = new ArrayList<>(stringList.size());
+        stringList.forEach(entry -> accountMovementList.add(convertStringIntoAccountMovement(entry)));
+        return accountMovementList;
+    }
+
+    private AccountMovement convertStringIntoAccountMovement(String accMovementString) {
+        String[] rowString = accMovementString.split(";");
+        return new AccountMovement(
+                1234567,
+                LocalDate.parse(rowString[0], dateTimeFormatter),
+                rowString[1],
+                rowString[2],
+                BigDecimal.valueOf(Double.parseDouble(rowString[8]))
         );
     }
 

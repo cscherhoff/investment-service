@@ -5,6 +5,7 @@ import com.exxeta.investmentservice.util.LocalDateSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,6 +35,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ISIN")
+    @Nullable
     private Security security;
 
     @NotNull
@@ -128,7 +130,10 @@ public class Transaction {
     }
 
     public String getIsin() {
-        return security.getIsin();
+        if (security != null) {
+            return security.getIsin();
+        }
+        return "";
     }
 
     public void setType(String type) {
