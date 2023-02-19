@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 public class Security {
@@ -38,5 +39,18 @@ public class Security {
 
     public String getSecurityName() {
         return securityName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Security security = (Security) o;
+        return Objects.equals(isin, security.isin) && Objects.equals(securityName, security.securityName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isin, securityName);
     }
 }

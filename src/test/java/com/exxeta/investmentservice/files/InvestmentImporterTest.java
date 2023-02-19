@@ -21,7 +21,7 @@ public class InvestmentImporterTest {
 //        exportTest();
 
 //        InvestmentImporter investmentImporter = new InvestmentImporter(null);
-//        List<Transaction> transactionList = investmentImporter.loadTransactionList();
+//        List<Transaction> transactionList = investmentImporter.importTransactionList();
 //        assertEquals(234, transactionList.size(), "The number of lines in the file should be 1");
     }
 

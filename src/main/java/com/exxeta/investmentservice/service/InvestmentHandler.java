@@ -1,16 +1,15 @@
 package com.exxeta.investmentservice.service;
 
 import com.exxeta.investmentservice.dtos.InvestedInformation;
+import com.exxeta.investmentservice.entities.AccountMovement;
 import com.exxeta.investmentservice.entities.Investment;
 import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.repositories.AccountMovementRepository;
 import com.exxeta.investmentservice.repositories.InvestmentRepository;
 import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,10 +18,13 @@ public class InvestmentHandler {
     private final InvestmentRepository investmentRepository;
     private final TransactionRepository transactionRepository;
 
+    private final AccountMovementRepository accountMovementRepository;
+
     public InvestmentHandler(
-        InvestmentRepository investmentRepository,
-        TransactionRepository transactionRepository) {this.investmentRepository = investmentRepository;
+            InvestmentRepository investmentRepository,
+            TransactionRepository transactionRepository, AccountMovementRepository accountMovementRepository) {this.investmentRepository = investmentRepository;
         this.transactionRepository = transactionRepository;
+        this.accountMovementRepository = accountMovementRepository;
     }
 
     public void handleNewInvestment(Investment investment) {
@@ -38,13 +40,13 @@ public class InvestmentHandler {
     }
 
     private BigDecimal calculateAlreadyInvested(long userId) {
-        List<Transaction> transactionList = transactionRepository.findAllByUserId(userId);
+        List<AccountMovement> accountMovementList = accountMovementRepository.findAllByUserId(userId);
         BigDecimal alreadyInvested = BigDecimal.ZERO;
-        for (Transaction transaction: transactionList) {
-            if(transaction.getType().equals("TransferFromDepot")) {
-                alreadyInvested = alreadyInvested.subtract(transaction.getTotalPrice());
-            } else if (transaction.getType().equals("TransferToDepot")) {
-                alreadyInvested = alreadyInvested.add(transaction.getTotalPrice());
+        for (AccountMovement accountMovement: accountMovementList) {
+            if(accountMovement.getType().equals("TransferFromDepot")) {
+                alreadyInvested = alreadyInvested.subtract(accountMovement.getAmount());
+            } else if (accountMovement.getType().equals("TransferToDepot")) {
+                alreadyInvested = alreadyInvested.add(accountMovement.getAmount());
             }
         }
         return alreadyInvested;

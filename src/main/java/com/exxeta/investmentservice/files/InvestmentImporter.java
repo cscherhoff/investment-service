@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.security.auth.login.AccountException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,14 +37,15 @@ public class InvestmentImporter {
         this.transactionHandler = transactionHandler;
     }
 
-    public void loadTransactionList() {
+    public List<Transaction> importTransactionList() {
         logger.info("Importing transactions:");
         List<String> stringList = getListFromCsvFile(transactionImportFileName);
-//        stringList.remove(0);//TODO: check if this is really needed
+//        stringList.remove(0);// TODO: check if this is really needed
         logger.info("converting strings into transactions.");
 
-        List<Transaction> transactionList = convertStringListIntoTransactionList(stringList);
-        transactionList.forEach(transactionHandler::handleTransaction);//TODO: Move this part out of here
+        return convertStringListIntoTransactionList(stringList);
+//        List<Transaction> transactionList = convertStringListIntoTransactionList(stringList);
+//        transactionList.forEach(transactionHandler::handleTransaction);// TODO: Move this part out of here
 //        return transactionList;
     }
 
@@ -95,7 +94,11 @@ public class InvestmentImporter {
 
     private List<Transaction> convertStringListIntoTransactionList(List<String> stringList) {
         List<Transaction> transactionList = new ArrayList<>();
-        stringList.forEach(eintrag -> transactionList.add(convertStringToTransaction(eintrag)));
+        stringList.forEach(eintrag -> {
+            if (!eintrag.contains("TransferToDepot") && !eintrag.contains("TransferFromDepot")) {
+                transactionList.add(convertStringToTransaction(eintrag));
+            }
+        });
         return transactionList;
     }
 
@@ -132,7 +135,11 @@ public class InvestmentImporter {
 
     private List<AccountMovement> convertStringListIntoAccountMovementList(List<String> stringList) {
         List<AccountMovement> accountMovementList = new ArrayList<>(stringList.size());
-        stringList.forEach(entry -> accountMovementList.add(convertStringIntoAccountMovement(entry)));
+        stringList.forEach(entry -> {
+            if (entry.contains("TransferToDepot") || entry.contains("TransferFromDepot")) {
+                accountMovementList.add(convertStringIntoAccountMovement(entry));
+            }
+        });
         return accountMovementList;
     }
 
