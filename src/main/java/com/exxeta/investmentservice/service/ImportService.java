@@ -8,7 +8,9 @@ import com.exxeta.investmentservice.repositories.AccountMovementRepository;
 import com.exxeta.investmentservice.repositories.SecurityRepository;
 import com.exxeta.investmentservice.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,5 +42,13 @@ public class ImportService {
         transactionRepository.saveAll(transactionList);
         accountMovementRepository.saveAll(accountMovementList);
 
+    }
+
+    public void importTransactions(MultipartFile file) throws IOException {
+        if (file.getName().contains("account")) {
+            investmentImporter.importAccountMovementList(file);
+        } else {
+            investmentImporter.importTransactionList(file);
+        }
     }
 }

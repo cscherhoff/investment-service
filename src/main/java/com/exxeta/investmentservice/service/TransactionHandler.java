@@ -75,16 +75,16 @@ public class TransactionHandler {
 
     public String recalculateAll(long userId) {
         List<Transaction> transactionList = transactionRepository.findAllByUserIdOrderByDate(userId);
-        int start = 260;
-        int end = 285;
-        for(int i = start; i<end; i++) {
-            Transaction transaction = transactionList.get(i);
-            logger.info("Handling the following transaction (" + i + "): " + transaction);
-            handleTransaction(transaction);
-        }
-//        for (Transaction transaction: transactionList) {
+//        int start = 260;
+//        int end = 285;
+//        for(int i = start; i<end; i++) {
+//            Transaction transaction = transactionList.get(i);
+//            logger.info("Handling the following transaction (" + i + "): " + transaction);
 //            handleTransaction(transaction);
 //        }
+        for (Transaction transaction: transactionList) {
+            handleTransaction(transaction);
+        }
         return "Successfully recalculated dept entries and profits for all transactions";
     }
 

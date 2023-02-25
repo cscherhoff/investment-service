@@ -8,12 +8,11 @@ import com.exxeta.investmentservice.service.TransactionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,10 +48,28 @@ public class InvestmentImporter {
 //        return transactionList;
     }
 
+    public List<Transaction> importTransactionList(MultipartFile file) throws IOException {
+        List<String> stringList = new ArrayList<>();
+        final InputStream inputStream = file.getInputStream();
+        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .forEach(stringList::add);
+        return convertStringListIntoTransactionList(stringList);
+    }
+
     public List<AccountMovement> importAccountMovementList() {
         logger.info("Importing account movements");
         List<String> stringList = getListFromCsvFile(accountMovementImportFileName);
         logger.info("converting strings into account movements");
+        return convertStringListIntoAccountMovementList(stringList);
+    }
+
+    public List<AccountMovement> importAccountMovementList(MultipartFile file) throws IOException {
+        List<String> stringList = new ArrayList<>();
+        final InputStream inputStream = file.getInputStream();
+        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .forEach(stringList::add);
         return convertStringListIntoAccountMovementList(stringList);
     }
 
