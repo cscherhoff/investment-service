@@ -23,14 +23,16 @@ public class InvestmentImporter {
 
     private final String transactionImportFileName = "transactions.csv";
     private final String investmentImportFileName = "investitionsListe.csv";
-
-    private final String accountMovementImportFileName = "accountmovement.csv";
+    private final String accountMovementImportFileName = "accountMovements.csv";
 
     private final TransactionHandler transactionHandler;
 
     private final Logger logger = LoggerFactory.getLogger(InvestmentImporter.class);
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private String importPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "export"
+            + System.getProperty("file.separator") + "1234567" + System.getProperty("file.separator");
 
     public InvestmentImporter(TransactionHandler transactionHandler) {
         this.transactionHandler = transactionHandler;
@@ -86,7 +88,8 @@ public class InvestmentImporter {
         List<String> stringList = new ArrayList<>();
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource(fileName).getFile());
+            File file = new File(importPath + fileName);
+//            File file = new File(classLoader.getResource(fileName).getFile());
             String csvEntry;
             in = new BufferedReader(new FileReader(file.getAbsolutePath()));
             csvEntry = in.readLine();
@@ -167,7 +170,7 @@ public class InvestmentImporter {
                 LocalDate.parse(rowString[0], dateTimeFormatter),
                 rowString[1],
                 rowString[2],
-                BigDecimal.valueOf(Double.parseDouble(rowString[8]))
+                BigDecimal.valueOf(Double.parseDouble(rowString[3]))
         );
     }
 
@@ -179,7 +182,11 @@ public class InvestmentImporter {
 
     private Investment convertStringToInvestment(String investmentString) {
         String[] row_string = investmentString.split(";");
-        return null;
-//        return new Investment(0, row_string[0], Double.parseDouble(row_string[1]));
+//        return null;
+        return new Investment(
+                1234567,
+                LocalDate.parse(row_string[0], dateTimeFormatter),
+                Double.parseDouble(row_string[1])
+        );
     }
 }

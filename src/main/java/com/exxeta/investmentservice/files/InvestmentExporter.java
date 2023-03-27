@@ -1,8 +1,6 @@
 package com.exxeta.investmentservice.files;
 
-import com.exxeta.investmentservice.entities.DepotEntry;
-import com.exxeta.investmentservice.entities.Profit;
-import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.util.Assert;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,8 @@ public class InvestmentExporter {
         logger.info("The exportPath for the expenses is: " + this.exportPath);
     }
 
-    public void export(List<Transaction> transactionList, List<DepotEntry> depotEntryList, List<Profit> profitList, boolean append) throws IOException {
+    public void export(List<Transaction> transactionList, List<AccountMovement> accountMovementList,
+                       List<Investment> investmentList, boolean append) throws IOException {
         if (!transactionList.isEmpty()) {
             long userId = transactionList.get(0).getUserId();
             final String separator = System.getProperty("file.separator");
@@ -40,12 +40,23 @@ public class InvestmentExporter {
                 createFolder(pathToIdFolder);
             }
             logger.info("The folder exists and the expenses will be exported now:");
+
             logger.info("exporting the transactions:");
             export(createListOfTransactionStrings(transactionList), pathToIdFolder + separator + "transactions.csv", append);
-            logger.info("exporting the depotEntries:");
-            export(createListOfDepotStrings(depotEntryList), pathToIdFolder + separator + "depotEntries.csv", append);
-            logger.info("exporting the profits:");
-            export(createListOfProfitStrings(profitList), pathToIdFolder + separator + "profits.csv", append);
+            logger.info("Export was successful");
+
+            logger.info("exporting the account movements:");
+            export(createListOfAccountMovementsStrings(accountMovementList), pathToIdFolder + separator + "accountMovements.csv", append);
+            logger.info("Export was successful");
+
+            logger.info("exporting the investments:");
+            export(createListOfInvestmentsStrings(investmentList), pathToIdFolder + separator + "investitionsListe.csv", append);
+            logger.info("Export was successful");
+
+//            logger.info("exporting the depotEntries:");
+//            export(createListOfDepotStrings(depotEntryList), pathToIdFolder + separator + "depotEntries.csv", append);
+//            logger.info("exporting the profits:");
+//            export(createListOfProfitStrings(profitList), pathToIdFolder + separator + "profits.csv", append);
         }
     }
 
@@ -99,6 +110,18 @@ public class InvestmentExporter {
         return listOfStrings;
     }
 
+    private List<String> createListOfAccountMovementsStrings(List<AccountMovement> accountMovementList) {
+        List<String> listOfStrings = new ArrayList<>();
+        accountMovementList.forEach(accountMovement -> listOfStrings.add(accountMovementToString(accountMovement)));
+        return listOfStrings;
+    }
+
+    private List<String> createListOfInvestmentsStrings(List<Investment> investmentList) {
+        List<String> listOfStrings = new ArrayList<>();
+        investmentList.forEach(investment -> listOfStrings.add(investmentToString(investment)));
+        return listOfStrings;
+    }
+
     private List<String> createListOfDepotStrings(List<DepotEntry> depotEntryList) {
         List<String> listOfStrings = new ArrayList<>();
         depotEntryList.forEach(depotEntry -> listOfStrings.add(depotEntryToString(depotEntry)));
@@ -116,9 +139,20 @@ public class InvestmentExporter {
         if (transaction.getSecurity() != null) {
             securityName = transaction.getSecurity().getSecurityName();
         }
+        BigDecimal totalPrice = transaction.getTotalPrice();
+        totalPrice = totalPrice.doubleValue() < 0.00 ? totalPrice.negate() : totalPrice;
         return transaction.getDate() + ";" + transaction.getDepotName() + ";" + transaction.getType() + ";"
                 + transaction.getIsin() + ";" + securityName + ";" + transaction.getNumber() + ";"
-                + transaction.getPrice() + ";" + transaction.getExpenses() + ";" + transaction.getTotalPrice();
+                + transaction.getPrice() + ";" + transaction.getExpenses() + ";" + totalPrice;
+    }
+
+    private String accountMovementToString(AccountMovement accountMovement) {
+        return accountMovement.getDate() + ";" + accountMovement.getDepotName() + ";"
+                + accountMovement.getType() + ";" + accountMovement.getAmount();
+    }
+
+    private String investmentToString(Investment investment) {
+        return investment.getDate() + ";" + investment.getAmount();
     }
 
     private String depotEntryToString(DepotEntry depotEntry) {

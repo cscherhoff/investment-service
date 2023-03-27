@@ -36,6 +36,14 @@ public class Investment {
 
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
     public Investment(long userId, @NotNull LocalDate date, @NotNull double amount) {
         this.userId = userId;
         this.date = date;

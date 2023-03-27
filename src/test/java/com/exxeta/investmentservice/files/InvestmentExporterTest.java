@@ -1,8 +1,6 @@
 package com.exxeta.investmentservice.files;
 
-import com.exxeta.investmentservice.entities.DepotEntry;
-import com.exxeta.investmentservice.entities.Profit;
-import com.exxeta.investmentservice.entities.Transaction;
+import com.exxeta.investmentservice.entities.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -22,12 +20,11 @@ public class InvestmentExporterTest {
         List<Transaction> transactionList = List.of(new Transaction("testDepot", LocalDate.now(),
             "Kauf", "BMW", BigDecimal.valueOf(20.99), BigDecimal.valueOf(100.00),
             BigDecimal.valueOf(1.0), BigDecimal.valueOf(2100.00)));
-        List<DepotEntry> depotEntryList = List.of(new DepotEntry("testDepot", "HUGO", BigDecimal.valueOf(100.00),
-            BigDecimal.valueOf(20.99), BigDecimal.valueOf(1.00)));
-        List<Profit> profitList = List.of(new Profit(6, "testDepot", "BlaBla", BigDecimal.valueOf(250.85),
-            BigDecimal.valueOf(0.21), BigDecimal.valueOf(249.33), BigDecimal.valueOf(0.18)));
+        List<AccountMovement> accountMovementList = List.of(new AccountMovement(6, LocalDate.now(),
+                "testDepot", "TransferToDepot", BigDecimal.valueOf(123.45)));
+        List<Investment> investmentList = List.of(new Investment(6, LocalDate.now(), 9876.54));
         try {
-            investmentExporter.export(transactionList, depotEntryList, profitList, false);
+            investmentExporter.export(transactionList, accountMovementList, investmentList, false);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

@@ -5,16 +5,12 @@ import com.exxeta.investmentservice.entities.Profit;
 import com.exxeta.investmentservice.entities.Security;
 import com.exxeta.investmentservice.entities.Transaction;
 import com.exxeta.investmentservice.files.InvestmentExporter;
-import com.exxeta.investmentservice.repositories.DepotEntryRepository;
-import com.exxeta.investmentservice.repositories.ProfitRepository;
-import com.exxeta.investmentservice.repositories.SecurityRepository;
-import com.exxeta.investmentservice.repositories.TransactionRepository;
+import com.exxeta.investmentservice.repositories.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -24,6 +20,8 @@ public class InvestmentService {
     private final ProfitRepository profitRepository;
     private final SecurityRepository securityRepository;
     private final TransactionRepository transactionRepository;
+    private final AccountMovementRepository accountMovementRepository;
+    private final InvestmentRepository investmentRepository;
 
     private final InvestmentExporter investmentExporter;
 
@@ -31,13 +29,16 @@ public class InvestmentService {
 
     private final Logger logger = LoggerFactory.getLogger(InvestmentService.class);
 
-    public InvestmentService(DepotEntryRepository depotEntryRepository,
-                             ProfitRepository profitRepository, SecurityRepository securityRepository, TransactionRepository transactionRepository, InvestmentExporter investmentExporter) {
+    public InvestmentService(DepotEntryRepository depotEntryRepository, ProfitRepository profitRepository,
+                             SecurityRepository securityRepository, TransactionRepository transactionRepository,
+                             AccountMovementRepository accountMovementRepository, InvestmentRepository investmentRepository, InvestmentExporter investmentExporter) {
         this.depotEntryRepository = depotEntryRepository;
         this.profitRepository = profitRepository;
         this.securityRepository = securityRepository;
         this.transactionRepository = transactionRepository;
+        this.investmentRepository = investmentRepository;
         this.investmentExporter = investmentExporter;
+        this.accountMovementRepository = accountMovementRepository;
     }
 
     public List<DepotEntry> getAllDepotEntries(long userId) {
@@ -58,8 +59,8 @@ public class InvestmentService {
 
     public void downloadTransactions(long userId) throws IOException {
         investmentExporter.export(transactionRepository.findAllByUserId(userId),
-                Collections.emptyList(),
-                Collections.emptyList(),
+                accountMovementRepository.findAllByUserId(userId),
+                investmentRepository.findAllByUserId(userId),
                 false);
     }
 }
