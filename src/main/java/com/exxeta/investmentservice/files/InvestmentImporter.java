@@ -31,7 +31,7 @@ public class InvestmentImporter {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private String importPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "export"
+    private String importPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "import"
             + System.getProperty("file.separator") + "1234567" + System.getProperty("file.separator");
 
     public InvestmentImporter(TransactionHandler transactionHandler) {
