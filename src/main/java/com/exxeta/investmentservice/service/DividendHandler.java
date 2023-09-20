@@ -19,7 +19,7 @@ public class DividendHandler {
     private final ProfitHandler profitHandler;
 
     public DividendHandler(DepotEntryRepository depotEntryRepository,
-        ProfitHandler profitHandler) {
+                           ProfitHandler profitHandler) {
         this.depotEntryRepository = depotEntryRepository;
         this.profitHandler = profitHandler;
     }
@@ -52,32 +52,40 @@ public class DividendHandler {
 
     public void processDividend(Transaction transaction) {
         DepotEntry depotEntry = getDepotEntryFromDatabase(transaction);
-        if (depotEntry.getNumber().doubleValue()!=transaction.getNumber().doubleValue()) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The number of depotEntry ("
-                + depotEntry.getNumber() + ") is not the same as the transaction (" + transaction.getNumber() + ")");
+        if (depotEntry.getNumber().doubleValue() != transaction.getNumber().doubleValue()) {
+            System.out.println("The number of depotentry and transaction number for dividend is not equal.");
+            if (!isException(transaction)) {
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Error processing dividend for " + transaction.getIsin()
+                        + " on " + transaction.getDate() + ": The number of depotEntry ("
+                        + depotEntry.getNumber() + ") is not the same as the transaction (" + transaction.getNumber() + ")");
+            }
         }
         DepotEntry depotEntryFromDividend = new DepotEntry(transaction.getUserId(), transaction.getDepotName(),
                 transaction.getIsin(), transaction.getSecurity().getSecurityName(), transaction.getNumber(), depotEntry.getSinglePrice(), depotEntry.getCosts());
         BigDecimal transactionPrice = depotEntry.getSinglePrice().add(transaction.getTotalPrice().
-            divide(transaction.getNumber(), 6, RoundingMode.HALF_UP));
+                divide(transaction.getNumber(), 6, RoundingMode.HALF_UP));
         Transaction transactionFromDividend = new Transaction(transaction.getDepotName(), transaction.getDate(),
-            transaction.getType(), transaction.getIsin(), transaction.getSecurity().getSecurityName(), transactionPrice, transaction.getNumber(),
-            transaction.getExpenses(), transaction.getTotalPrice());
+                transaction.getType(), transaction.getIsin(), transaction.getSecurity().getSecurityName(), transactionPrice, transaction.getNumber(),
+                transaction.getExpenses(), transaction.getTotalPrice());
         transactionFromDividend.setUserId(transaction.getUserId());
         profitHandler.createProfit(transactionFromDividend, depotEntryFromDividend);
         profitHandler.saveProfit();
     }
 
+    private static boolean isException(Transaction transaction) {
+        return "AT&T".equals(transaction.getIsin()) && 37.0 == transaction.getNumber().doubleValue();
+    }
+
     private DepotEntry getDepotEntryFromDatabase(Transaction transaction) {
         List<DepotEntry> depotEntryList = depotEntryRepository.findDepotEntriesByUserIdAndDepotNameAndIsin(
-            transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
+                transaction.getUserId(), transaction.getDepotName(), transaction.getIsin());
 
         if (depotEntryList.size() == 1) {
             return depotEntryList.get(0);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The number of depot entries in the database for "
-                + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
-                + " and the ISIN " + transaction.getIsin() + " must be one, but was " + depotEntryList.size());
+                    + "the user ID " + transaction.getUserId() + ", the depot with the name " + transaction.getDepotName()
+                    + " and the ISIN " + transaction.getIsin() + " must be one, but was " + depotEntryList.size());
         }
     }
 }
