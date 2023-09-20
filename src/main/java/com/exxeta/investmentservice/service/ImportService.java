@@ -37,7 +37,7 @@ public class ImportService {
     public void importTransactions() {
         final List<Transaction> transactionList = investmentImporter.importTransactionList();
         final List<AccountMovement> accountMovementList = investmentImporter.importAccountMovementList();
-        final List<Investment> investmentList = investmentImporter.loadInvestmentList();
+        final List<Investment> investmentList = investmentImporter.importInvestmentList();
 
         Set<Security> securities = new HashSet<>();
         transactionList.forEach(transaction -> securities.add(transaction.getSecurity()));

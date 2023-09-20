@@ -75,7 +75,7 @@ public class InvestmentImporter {
         return convertStringListIntoAccountMovementList(stringList);
     }
 
-    public List<Investment> loadInvestmentList() {
+    public List<Investment> importInvestmentList() {
         logger.info("importing investments");
         List<String> stringList = getListFromCsvFile(investmentImportFileName);
         logger.info("converting strings into investments");
