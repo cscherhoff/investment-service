@@ -30,7 +30,7 @@ public class InvestmentImporterTest {
                 BigDecimal.valueOf(1.0), BigDecimal.valueOf(2100.00)));
         List<AccountMovement> accountMovementList = List.of(new AccountMovement("6", LocalDate.now(),
                 "testDepot", "TransferToDepot", BigDecimal.valueOf(123.45)));
-        List<Investment> investmentList = List.of(new Investment(6, LocalDate.now(), 9876.54));
+        List<Investment> investmentList = List.of(new Investment("6", LocalDate.now(), 9876.54));
         try {
             investmentExporter.export(transactionList, accountMovementList, investmentList, false);
         } catch (IOException ioException) {

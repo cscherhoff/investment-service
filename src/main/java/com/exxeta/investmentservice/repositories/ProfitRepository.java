@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ProfitRepository extends JpaRepository<Profit, Long> {
-    List<Profit> findProfitsByUserId(long userId);
-    List<Profit> findProfitsByUserIdAndDepotNameAndIsin(long userId, String depotName, String isin);
+    List<Profit> findProfitsByUserId(String userId);
+    List<Profit> findProfitsByUserIdAndDepotNameAndIsin(String userId, String depotName, String isin);
 }

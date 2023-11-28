@@ -14,8 +14,7 @@ public class Security {
     @Column(length = 55)
     private String isin;
 
-    @JsonIgnore
-    private long userId;
+    private String userId;
 
     private String securityName;
 

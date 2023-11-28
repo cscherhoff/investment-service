@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AccountMovementRepository extends JpaRepository<AccountMovement, Long> {
-    List<AccountMovement> findAllByUserId(long userId);
-    List<AccountMovement> findAllByUserIdOrderByDate(long userId);
+    List<AccountMovement> findAllByUserId(String userId);
+    List<AccountMovement> findAllByUserIdOrderByDate(String userId);
 }

@@ -33,7 +33,7 @@ public class InvestmentExporter {
     public void export(List<Transaction> transactionList, List<AccountMovement> accountMovementList,
                        List<Investment> investmentList, boolean append) throws IOException {
         if (!transactionList.isEmpty()) {
-            long userId = transactionList.get(0).getUserId();
+            String userId = transactionList.get(0).getUserId();
             final String separator = System.getProperty("file.separator");
             final String pathToIdFolder = exportPath + separator + userId;
             if (!folderExists(pathToIdFolder)) {

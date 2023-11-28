@@ -17,8 +17,7 @@ public class DepotEntry {
     @JsonIgnore
     private long depotEntryId;
 
-    @JsonIgnore
-    private long userId;
+    private String userId;
     private String depotName;
     private String isin;
     private String securityName;
@@ -38,7 +37,7 @@ public class DepotEntry {
         this.costs = costs;
     }
 
-    public DepotEntry(long userId, String depotName, String isin, BigDecimal number,
+    public DepotEntry(String userId, String depotName, String isin, BigDecimal number,
         BigDecimal singlePrice, BigDecimal costs) {
         this.userId = userId;
         this.depotName = depotName;
@@ -48,7 +47,7 @@ public class DepotEntry {
         this.costs = costs;
     }
 
-    public DepotEntry(long userId, String depotName, String isin, String securityName, BigDecimal number,
+    public DepotEntry(String userId, String depotName, String isin, String securityName, BigDecimal number,
                       BigDecimal singlePrice, BigDecimal costs) {
         this.userId = userId;
         this.depotName = depotName;
@@ -86,7 +85,7 @@ public class DepotEntry {
         BigDecimal totalSumOfPriceFromTransaction = transactionNumber.multiply(transactionPrice);
         BigDecimal sumOfPrices = totalSumOfPriceFromDepot.add(totalSumOfPriceFromTransaction);
         BigDecimal sumOfNumbers = transactionNumber.add(depotNumber);
-        return sumOfPrices.divide(sumOfNumbers, 9, RoundingMode.HALF_UP);
+        return sumOfPrices.divide(sumOfNumbers, 9, BigDecimal.ROUND_HALF_UP);
     }
 
     public String getDepotName() {

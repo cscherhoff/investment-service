@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface DepotEntryRepository  extends JpaRepository<DepotEntry, Long> {
-    List<DepotEntry> findDepotEntriesByUserId(long userId);
-    List<DepotEntry> findDepotEntriesByUserIdAndDepotNameAndIsin(long userId, String depotName, String isin);
-    List<DepotEntry> findDepotEntriesByUserIdAndDepotName(long userId, String depotName);
+    List<DepotEntry> findDepotEntriesByUserId(String userId);
+    List<DepotEntry> findDepotEntriesByUserIdAndDepotNameAndIsin(String userId, String depotName, String isin);
+    List<DepotEntry> findDepotEntriesByUserIdAndDepotName(String userId, String depotName);
 }

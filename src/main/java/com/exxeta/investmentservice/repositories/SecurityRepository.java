@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface SecurityRepository extends JpaRepository<Security, String> {
-    List<Security> findAllByUserId(long userId);
+    List<Security> findAllByUserId(String userId);
     Optional<Security> findByIsin(String isin);
 
 

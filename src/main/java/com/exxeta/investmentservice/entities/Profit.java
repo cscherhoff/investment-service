@@ -13,8 +13,7 @@ public class Profit {
     @JsonIgnore
     private long profitId;
 
-    @JsonIgnore
-    private long userId;
+    private String userId;
 
     @JsonIgnore
     private String depotName;
@@ -42,7 +41,7 @@ public class Profit {
 //        this.grossPercentageProfit = grossPercentageProfit;
 //    }
 
-    public Profit(long userId, String depotName, String isin, BigDecimal netAbsoluteProfit,
+    public Profit(String userId, String depotName, String isin, BigDecimal netAbsoluteProfit,
         BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
         this.userId = userId;
         this.depotName = depotName;
@@ -53,7 +52,7 @@ public class Profit {
         this.grossPercentageProfit = grossPercentageProfit;
     }
 
-    public Profit(long userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
+    public Profit(String userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
                   BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
         this.userId = userId;
         this.depotName = depotName;
@@ -65,7 +64,7 @@ public class Profit {
         this.grossPercentageProfit = grossPercentageProfit;
     }
 
-    public Profit(long profitId, long userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
+    public Profit(long profitId, String userId, String depotName, String isin, String securityName, BigDecimal netAbsoluteProfit,
         BigDecimal grossAbsoluteProfit, BigDecimal netPercentageProfit, BigDecimal grossPercentageProfit) {
         this.profitId = profitId;
         this.userId = userId;

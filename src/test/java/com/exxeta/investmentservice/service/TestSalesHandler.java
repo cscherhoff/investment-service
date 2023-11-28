@@ -24,7 +24,7 @@ public class TestSalesHandler {
 
     @Test
     public void testProcessSale() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),
@@ -55,7 +55,7 @@ public class TestSalesHandler {
 
     @Test
     public void testSellEverythingOfOneSecurity() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),
@@ -84,7 +84,7 @@ public class TestSalesHandler {
 
     @Test
     public void testSellMoreThaThereIsInTheDatabase() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),
@@ -107,7 +107,7 @@ public class TestSalesHandler {
     }
 
     @Test void testSellSomethingThatIsNotInTheDatabase() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),
@@ -128,7 +128,7 @@ public class TestSalesHandler {
     }
 
     @Test void testSGetMoreThanOneDepotEntriesFormTheDatabase() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),

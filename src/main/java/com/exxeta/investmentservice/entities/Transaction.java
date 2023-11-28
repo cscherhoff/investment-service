@@ -21,8 +21,7 @@ public class Transaction {
     @JsonIgnore
     private long transactionId;
 
-    @JsonIgnore
-    private long userId;
+    private String userId;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -75,7 +74,7 @@ public class Transaction {
         this.totalPrice = totalPrice;
     }
 
-    public Transaction(long userId, @NotNull LocalDate date, @NotNull String depotName, @NotNull String type,
+    public Transaction(String userId, @NotNull LocalDate date, @NotNull String depotName, @NotNull String type,
                        Security security, @NotNull BigDecimal number, @NotNull BigDecimal price,
                        @NotNull BigDecimal expenses, @NotNull BigDecimal totalPrice) {
         this.userId = userId;
@@ -89,11 +88,11 @@ public class Transaction {
         this.totalPrice = totalPrice;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

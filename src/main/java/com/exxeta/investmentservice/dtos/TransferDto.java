@@ -4,24 +4,24 @@ import java.math.BigDecimal;
 
 public class TransferDto {
 
-    private long userId;
+    private String userId;
     private String accountName;
     private BigDecimal amount;
 
     public TransferDto() {
     }
 
-    public TransferDto(long userId, String accountName, BigDecimal amount) {
+    public TransferDto(String userId, String accountName, BigDecimal amount) {
         this.userId = userId;
         this.accountName = accountName;
         this.amount = amount;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -41,23 +41,23 @@ public class InvestmentService {
         this.accountMovementRepository = accountMovementRepository;
     }
 
-    public List<DepotEntry> getAllDepotEntries(long userId) {
+    public List<DepotEntry> getAllDepotEntries(String userId) {
         return depotEntryRepository.findDepotEntriesByUserId(userId);
     }
 
-    public List<DepotEntry> getAllDepotEntries(long userId, String depotName) {
+    public List<DepotEntry> getAllDepotEntries(String userId, String depotName) {
         return depotEntryRepository.findDepotEntriesByUserIdAndDepotName(userId, depotName);
     }
 
-    public List<Profit> getAllProfits(long userId) {
+    public List<Profit> getAllProfits(String userId) {
         return profitRepository.findProfitsByUserId(userId);
     }
 
-    public List<Security> getAllSecurities(long userId) {return securityRepository.findAllByUserId(userId);}
+    public List<Security> getAllSecurities(String userId) {return securityRepository.findAllByUserId(userId);}
 
-    public List<Transaction> getAllTransactions(long userId) {return transactionRepository.findAllByUserId(userId);}
+    public List<Transaction> getAllTransactions(String userId) {return transactionRepository.findAllByUserId(userId);}
 
-    public void downloadTransactions(long userId) throws IOException {
+    public void downloadTransactions(String userId) throws IOException {
         investmentExporter.export(transactionRepository.findAllByUserId(userId),
                 accountMovementRepository.findAllByUserId(userId),
                 investmentRepository.findAllByUserId(userId),

@@ -22,7 +22,7 @@ public class TestProfitHandler {
     private final ProfitCalculator profitCalculator = new ProfitCalculator();
     private final ProfitHandler profitHandler = new ProfitHandler(profitRepository, profitCalculator);
 
-    private final long userId = 6;
+    private final String userId = "6";
 
     @Test
     public void testCreateNewProfit() {
@@ -93,7 +93,7 @@ public class TestProfitHandler {
 
     @Test
     public void testFindMoreThanOneProfitInDatabaseError() {
-        long userId = 6;
+        String userId = "6";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),

@@ -26,7 +26,7 @@ public class TestService {
 
     private final InvestmentService investmentService = new InvestmentService(depotEntryRepository, profitRepository, securityRepository, transactionRepository, accountMovementRepository, investmentRepository, investmentExporter);
 
-    private final long userId = 6;
+    private final String userId = "6";
     private final String depotName = "ING Depot";
     private final String securityName = "BMW";
 

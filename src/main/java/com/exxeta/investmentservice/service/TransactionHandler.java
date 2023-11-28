@@ -73,7 +73,7 @@ public class TransactionHandler {
         saveTransactionToDatabase(transaction);
     }
 
-    public String recalculateAll(long userId) {
+    public String recalculateAll(String userId) {
         List<Transaction> transactionList = transactionRepository.findAllByUserIdOrderByDate(userId);
 //        int start = 260;
 //        int end = 285;

@@ -21,7 +21,7 @@ public class TestBuyHandler {
 
     @Test
     public void testProcessBuyWithNewDepotEntriesInTheDatabase() {
-        long userId = 7;
+        String userId = "7";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),
@@ -44,7 +44,7 @@ public class TestBuyHandler {
 
     @Test
     public void testProcessBuyWithOneDepotEntryInTheDatabase() {
-        long userId = 7;
+        String userId = "7";
         String depotName = "ING Depot";
         String securityName = "BMW";
 
@@ -71,7 +71,7 @@ public class TestBuyHandler {
 
     @Test
     public void testProcessBuyWithTwoDepotEntriesInTheDatabase() {
-        long userId = 7;
+        String userId = "7";
         String depotName = "ING Depot";
         String securityName = "BMW";
         Transaction transaction = new Transaction("ING Depot", LocalDate.of(2021, 7, 26),

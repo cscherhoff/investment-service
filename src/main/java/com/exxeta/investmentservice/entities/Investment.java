@@ -21,8 +21,7 @@ public class Investment {
     @JsonIgnore
     public long investmentId;
 
-    @JsonIgnore
-    public long userId;
+    public String userId;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -44,7 +43,7 @@ public class Investment {
         return amount;
     }
 
-    public Investment(long userId, @NotNull LocalDate date, @NotNull double amount) {
+    public Investment(String userId, @NotNull LocalDate date, @NotNull double amount) {
         this.userId = userId;
         this.date = date;
         this.amount = amount;

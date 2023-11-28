@@ -18,7 +18,7 @@ public class AccountMovementService {
         return accountMovementRepository.save(accountMovement);
     }
 
-    public List<AccountMovement> getAllAccountMovements(Long userId) {
+    public List<AccountMovement> getAllAccountMovements(String userId) {
         return accountMovementRepository.findAllByUserId(userId);
     }
 }

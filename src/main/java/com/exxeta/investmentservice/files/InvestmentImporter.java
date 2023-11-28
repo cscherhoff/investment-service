@@ -125,7 +125,7 @@ public class InvestmentImporter {
     private Transaction convertStringToTransaction(String transactionString) {
         String[] row_string = transactionString.split(";");
         return new Transaction(
-                1234567,
+                "1234567",
                 LocalDate.parse(row_string[0], dateTimeFormatter),
                 row_string[1],
                 row_string[2],
@@ -141,7 +141,7 @@ public class InvestmentImporter {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String[] row_string = transactionString.split(";");
         return new Transaction(
-                1234567L,
+                "1234567L",
                 LocalDate.parse(row_string[2].substring(1,row_string[2].length()-1), dateTimeFormatter),
                 row_string[3].substring(1, row_string[3].length()-1),
                 row_string[9].substring(1, row_string[9].length()-1),
@@ -184,7 +184,7 @@ public class InvestmentImporter {
         String[] row_string = investmentString.split(";");
 //        return null;
         return new Investment(
-                1234567,
+                "1234567",
                 LocalDate.parse(row_string[0], dateTimeFormatter),
                 Double.parseDouble(row_string[1])
         );

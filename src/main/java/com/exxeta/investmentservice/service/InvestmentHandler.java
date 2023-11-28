@@ -31,7 +31,7 @@ public class InvestmentHandler {
         investmentRepository.save(investment);
     }
 
-    public InvestedInformation getInvestedInformation(long userId) {
+    public InvestedInformation getInvestedInformation(String userId) {
         BigDecimal alreadyInvested = calculateAlreadyInvested(userId).subtract(BigDecimal.valueOf(5514.8));
         BigDecimal dedicatedToInvest = calculateAmountDedicatedToInvest(userId);
         BigDecimal investable = dedicatedToInvest.subtract(alreadyInvested);
@@ -39,7 +39,7 @@ public class InvestmentHandler {
         return new InvestedInformation(dedicatedToInvest, alreadyInvested, investable);
     }
 
-    private BigDecimal calculateAlreadyInvested(long userId) {
+    private BigDecimal calculateAlreadyInvested(String userId) {
         List<AccountMovement> accountMovementList = accountMovementRepository.findAllByUserId(userId);
         BigDecimal alreadyInvested = BigDecimal.ZERO;
         for (AccountMovement accountMovement: accountMovementList) {
@@ -52,7 +52,7 @@ public class InvestmentHandler {
         return alreadyInvested;
     }
 
-    private BigDecimal calculateAmountDedicatedToInvest(long userId) {
+    private BigDecimal calculateAmountDedicatedToInvest(String userId) {
         List<Investment> investmentList = investmentRepository.findAllByUserId(userId);
         BigDecimal dedicatedToInvest = BigDecimal.ZERO;
         for (Investment investment: investmentList) {
