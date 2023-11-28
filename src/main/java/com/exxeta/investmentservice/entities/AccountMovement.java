@@ -2,7 +2,6 @@ package com.exxeta.investmentservice.entities;
 
 import com.exxeta.investmentservice.util.LocalDateDeserializer;
 import com.exxeta.investmentservice.util.LocalDateSerializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -20,8 +19,7 @@ public class AccountMovement {
     @GeneratedValue
     private long accountMovementId;
 
-    @JsonIgnore
-    private long userId;
+    private String userId;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -37,7 +35,7 @@ public class AccountMovement {
     public AccountMovement() {
     }
 
-    public AccountMovement(long userId, LocalDate date, String depotName, String type, BigDecimal amount) {
+    public AccountMovement(String userId, LocalDate date, String depotName, String type, BigDecimal amount) {
         this.userId = userId;
         this.date = date;
         this.depotName = depotName;
@@ -49,11 +47,11 @@ public class AccountMovement {
         return accountMovementId;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

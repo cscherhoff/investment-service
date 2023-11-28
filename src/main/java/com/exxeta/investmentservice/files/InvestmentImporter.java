@@ -166,7 +166,7 @@ public class InvestmentImporter {
     private AccountMovement convertStringIntoAccountMovement(String accMovementString) {
         String[] rowString = accMovementString.split(";");
         return new AccountMovement(
-                1234567,
+                "1234567",
                 LocalDate.parse(rowString[0], dateTimeFormatter),
                 rowString[1],
                 rowString[2],
